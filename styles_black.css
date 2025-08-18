@@ -1,0 +1,152 @@
+:root {
+  --brand-bg: #0b0d0f;
+  --brand-fg: #eadfb3;
+  --brand-muted: #c7c2ac;
+  --brand-primary: #eadfb3;
+  --brand-border: #333333;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background-color: var(--brand-bg);
+  color: var(--brand-fg);
+  line-height: 1.6;
+}
+
+header {
+  background-color: var(--brand-bg);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--brand-border);
+}
+
+header a {
+  color: var(--brand-fg);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  margin-left: 1rem;
+}
+
+nav ul li a {
+  color: var(--brand-fg);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: var(--brand-primary);
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  border: none;
+  background-color: var(--brand-primary);
+  color: #0b0d0f;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #d5c89a;
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: var(--brand-bg);
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.card {
+  background-color: #121212;
+  border: 1px solid var(--brand-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+.card h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid var(--brand-border);
+}
+
+.table th {
+  text-align: left;
+  background-color: #1a1a1a;
+  color: var(--brand-fg);
+}
+
+.table td {
+  background-color: #0f0f0f;
+  color: var(--brand-fg);
+}
+
+.chart {
+  margin-top: 1rem;
+  background-color: #121212;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.chart img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.chart h4 {
+  margin-bottom: 0.5rem;
+  color: var(--brand-fg);
+}
+
+footer {
+  text-align: center;
+  background-color: var(--brand-bg);
+  color: var(--brand-muted);
+  padding: 2rem;
+  border-top: 1px solid var(--brand-border);
+}
