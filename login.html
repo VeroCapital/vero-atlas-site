@@ -67,6 +67,23 @@
         alert("Fel användarnamn eller lösenord");
       }
     });
+
+    <script>
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault(); // Hindra vanlig formulärpost
+
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+
+    // Enkel test-inloggning – ersätt gärna med riktig validering
+    if (user === 'admin' && pass === 'vero123') {
+      localStorage.setItem('atlasLoggedIn', 'true');    // markera att vi är inloggade
+      window.location.href = 'shipping.html';          // vidare till shipping
+    } else {
+      alert('Fel användarnamn eller lösenord');
+    }
+  });
+</script>
   </script>
 </body>
 </html>
