@@ -1,0 +1,70 @@
+Category,Metric,Description
+Dry Bulk,BDI,"Baltic Dry Index – composite index of Capesize, Panamax and Supramax time-charter averages."
+Dry Bulk,Capesize Rate,Time-charter rate for Capesize bulk carriers (typically 180k dwt).
+Dry Bulk,Panamax Rate,Time-charter rate for Panamax bulk carriers (around 82k dwt).
+Dry Bulk,Supramax Rate,Time-charter rate for Supramax bulk carriers.
+Dry Bulk,Dry Cargo Volume,"Global volume of dry bulk cargo (iron ore, coal, grain)."
+Dry Bulk,Orderbook,Newbuild orderbook for bulk carriers by size class.
+Crude Tankers,BDTI,Baltic Dirty Tanker Index – measures transportation cost of crude oil and fuel oil.
+Crude Tankers,VLCC Rate,Spot or time-charter rate for Very Large Crude Carriers.
+Crude Tankers,Suezmax Rate,Spot or time-charter rate for Suezmax crude tankers.
+Crude Tankers,Aframax Rate,Spot or time-charter rate for Aframax crude tankers.
+Crude Tankers,Oil Price (Brent),Price of Brent crude oil benchmark.
+Crude Tankers,Fleet Size,"Total number of crude tankers by class (VLCC, ULCC, Suezmax, Aframax, Panamax)."
+Product & Chemical Tankers,BCTI,Baltic Clean Tanker Index – measures transportation cost of refined products like gasoline and diesel.
+Product & Chemical Tankers,LR2 Rate,Spot or time-charter rate for LR2 product tankers.
+Product & Chemical Tankers,MR Rate,Spot or time-charter rate for Medium Range (MR) product tankers.
+Product & Chemical Tankers,Refined Product Prices,"Prices of gasoline, diesel, jet fuel and naphtha."
+Product & Chemical Tankers,Chemical Tanker Rate,Spot or time-charter rate for chemical tankers (IMO classed).
+Gas Carriers,BLNG,Baltic LNG Index – composite index for LNG carrier spot rates.
+Gas Carriers,BLPG,Baltic LPG Index – composite index for LPG carrier spot rates.
+Gas Carriers,VLGC Rate,Spot or time-charter rate for Very Large Gas Carriers (LPG).
+Gas Carriers,LNG Spot Rate,"Spot charter rate for LNG carriers (e.g., 160k m³ vessels)."
+Gas Carriers,Natural Gas Price (TTF),Price of natural gas at the Dutch TTF hub.
+Gas Carriers,VLGC Fleet,Number of Very Large Gas Carriers in service.
+Container Shipping,SCFI,Shanghai Containerized Freight Index – spot rates from China.
+Container Shipping,FBX,Freightos Baltic Index – composite index for global container freight.
+Container Shipping,Charter Rate 2500 TEU,"Time-charter rate for ~2,500 TEU container ships."
+Container Shipping,TEU Capacity,Global TEU capacity of container fleet and orderbook.
+Container Shipping,Port Congestion Index,Measure of port congestion and waiting times.
+Ro-Ro & Car Carriers,Car Carrier Rate,Time-charter rate for Pure Car and Truck Carriers (PCTC).
+Ro-Ro & Car Carriers,Auto Export Volume,Volume of automotive exports/imports globally.
+Ro-Ro & Car Carriers,RoPax Rate,Freight rate for passenger and vehicle ferries (RoPax).
+Multipurpose/General Cargo,Multipurpose Rate,Freight rate for multipurpose/heavy-lift vessels.
+Multipurpose/General Cargo,Project Cargo Index,Composite index for project cargo (oversized & heavy).
+Reefer,Reefer Rate,Freight rate for refrigerated cargo (reefer vessels).
+Reefer,Reefer Trade Volume,Global volume of temperature-controlled cargo shipped.
+Vessel Size Category,Handymax (< 60k dwt),"Bulk or tanker vessels up to about 60,000 dwt."
+Vessel Size Category,Panamax (~65k dwt),Largest vessel size able to transit the Panama Canal【164142669682782†L44-L54】.
+Vessel Size Category,Capesize (80k-175k dwt),"Vessels too large for Panama/Suez, transit via Cape of Good Hope【164142669682782†L57-L62】."
+Vessel Size Category,Suezmax (~150k dwt),Largest vessel size capable of transiting the Suez Canal【164142669682782†L72-L77】.
+Vessel Size Category,VLCC (150k-320k dwt),Very Large Crude Carriers【164142669682782†L78-L83】.
+Vessel Size Category,ULCC (320k-550k dwt),Ultra Large Crude Carriers【164142669682782†L83-L87】.
+Shipping Indices,BDI Subindices,"BCI (Capesize), BPI (Panamax), BSI (Supramax), BHSI (Handysize) – the components of BDI【829901645567653†L140-L176】."
+Shipping Indices,FFA Curve,Forward Freight Agreement price curves for dry bulk and tanker routes.
+Shipping Indices,Port Throughput Index,Composite index measuring global port throughput.
+Commodities & Energy,Brent Crude Price,Benchmark price for North Sea crude oil.
+Commodities & Energy,WTI Crude Price,Benchmark price for U.S. West Texas Intermediate crude.
+Commodities & Energy,Natural Gas Price,"Prices at hubs (TTF, Henry Hub, JKM) used for LNG shipping."
+Commodities & Energy,Iron Ore Price,Price of 62% Fe iron ore cargoes.
+Commodities & Energy,Coal Price,Thermal and metallurgical coal prices.
+Commodities & Energy,Grain Prices,"Prices for wheat, corn, soybeans."
+Commodities & Energy,Bunker Fuel VLSFO,Price of Very Low Sulfur Fuel Oil (0.5% sulfur) used in marine engines【356556643307154†L32-L58】.
+Commodities & Energy,Bunker Fuel MGO,Price of Marine Gas Oil or LSMGO (0.1% sulfur)【356556643307154†L68-L76】.
+Macro & Risk,Global GDP Growth,Annual growth rate of global gross domestic product.
+Macro & Risk,Manufacturing PMI,Purchasing Managers’ Index for global manufacturing.
+Macro & Risk,Interest Rates,Key central bank policy rates.
+Macro & Risk,Exchange Rates,"Currency exchange rates (USD/EUR, USD/CNY, etc.)."
+Macro & Risk,Inflation,Consumer price indices for major economies.
+Regulatory & Environmental,IMO 2020 Sulfur Cap,Regulation limiting sulfur content in marine fuels to 0.5%.
+Regulatory & Environmental,EEXI,Energy Efficiency Existing Ship Index compliance data.
+Regulatory & Environmental,CII,Carbon Intensity Indicator scores for ships.
+Regulatory & Environmental,Carbon Price,"Cost of carbon allowances (e.g., EU ETS price)."
+Port & Harbour Data,Port Throughput,Total cargo or TEU volumes handled by a specific port.
+Port & Harbour Data,Vessel Waiting Time,Average waiting time at major ports.
+Port & Harbour Data,Port Fees,"Tariffs and charges for port services (pilotage, towage, mooring)."
+Vessel & Market Assets,Newbuild Price,Price for building a new vessel by type and size.
+Vessel & Market Assets,Secondhand Price,Market price for buying a secondhand vessel.
+Vessel & Market Assets,Scrap Value,Scrap value per light displacement tonne (LDT).
+Vessel & Market Assets,Average Vessel Age,Mean age of vessels in a given fleet segment.
+Vessel & Market Assets,Operating Expenses,Average OPEX per day by vessel type.
