@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="sv"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>VERO Atlas – Categories</title>
+<link rel="stylesheet" href="styles.css"/>
+<script>if(!localStorage.getItem('atlasLoggedIn')){location.href='login.html';}</script>
+</head><body>
+<header><div class="container nav-bar"><div class="logo">VERO Atlas</div><nav>
+  <a href="index.html">Hem</a>
+  <a href="shipping.html">Shipping-modul</a>
+  <a class="active" href="categories.html">Categories</a>
+  <a href="login.html" onclick="localStorage.clear()">Logga ut</a>
+</nav></div></header>
+<main class="dashboard"><div class="container">
+  <h2>Categories &amp; Metrics</h2>
+  <p class="muted">Datakatalog från <code>vero_atlas_categories_metrics.csv</code>.</p>
+  <div style="display:flex;gap:10px;margin:14px 0;">
+    <input id="q" placeholder="Sök på metric/beskrivning..."/>
+    <select id="cat"><option value="">Alla kategorier</option></select>
+  </div>
+  <section class="table-section"><div class="card">
+    <table class="data-table" id="tbl">
+      <thead><tr><th>Kategori</th><th>Metric</th><th>Beskrivning</th></tr></thead>
+      <tbody><tr><td colspan="3">Laddar…</td></tr></tbody>
+    </table>
+  </div></section>
+</div></main>
+<script>
+function parseCSV(t){const r=[];let o=[],c='',q=false;for(let i=0;i<t.length;i++){const a=t[i],n=t[i+1];if(q){if(a=='"'&&n=='"'){c+='"';i++;}else if(a=='"'){q=false;}else c+=a;}else{if(a=='"')q=true;else if(a==','){o.push(c);c='';}else if(a=='\n'){o.push(c);r.push(o);o=[];c='';}else if(a!='\r'){c+=a;}}}if(c.length||o.length){o.push(c);r.push(o);}return r;}
+function uniq(a){return[...new Set(a)];}
+function render(data,q='',cat=''){const tb=document.querySelector('#tbl tbody');tb.innerHTML='';const ql=(q||'').trim().toLowerCase();let arr=data;if(cat)arr=arr.filter(x=>x.Category===cat);if(ql)arr=arr.filter(x=>(x.Metric||'').toLowerCase().includes(ql)||(x.Description||'').toLowerCase().includes(ql));if(!arr.length){tb.innerHTML='<tr><td colspan="3">Inget matchade din filter/sökning.</td></tr>';return;}const f=document.createDocumentFragment();for(const r of arr){const tr=document.createElement('tr');tr.innerHTML='<td>'+ (r.Category||'') +'</td><td>'+(r.Metric||'')+'</td><td>'+(r.Description||'')+'</td>';f.appendChild(tr);}tb.appendChild(f);}
+(async()=>{const res=await fetch('vero_atlas_categories_metrics.csv',{cache:'no-store'}),text=await res.text();const rows=parseCSV(text),headers=rows.shift().map(h=>h.trim());const data=rows.map(r=>{const o={};headers.forEach((h,i)=>o[h]=(r[i]||'').trim());return o;});const catSel=document.getElementById('cat');uniq(data.map(d=>d.Category)).sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;catSel.appendChild(o);});const q=document.getElementById('q');const doR=()=>render(data,q.value,catSel.value);q.addEventListener('input',doR);catSel.addEventListener('change',doR);render(data);})();
+</script>
+</body></html>
