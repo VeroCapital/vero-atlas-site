@@ -244,5 +244,16 @@ footer {
   background-color: var(--brand-bg);
   color: var(--brand-muted);
   padding: 1.5rem 0;
+
+  /* Tabs */
+.tabs { display:flex; gap:8px; margin: 8px 12px 16px; }
+.tab { border:1px solid #e6d9b8; background:#0f0f0f; color:#e6d9b8; padding:8px 12px; border-radius:8px; cursor:pointer; }
+.tab:hover { background:#161616; }
+.tab.active { background:#e6d9b8; color:#0f0f0f; }
+
+/* Panels */
+.panel { display:none; }
+.panel.show { display:block; }
+
   border-top: 1px solid var(--brand-border);
 }
