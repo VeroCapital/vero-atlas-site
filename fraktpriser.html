@@ -1,134 +1,187 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang=\"sv\">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset=\"UTF-8\" />
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
   <title>VERO Atlas – Fraktpriser</title>
-  <link rel="stylesheet" href="styles.css" />
-<script>
-  // Gate: kräver inloggning
- if (!localStorage.getItem('atlasLoggedIn') && !localStorage.getItem('atLasLoggedn')) {
-    location.href = 'login.html';
-  }
-</script>ript>
+  <!-- Basstil: existerande styles.css måste redan inkluderas i projektet -->
+  <link rel=\"stylesheet\" href=\"styles.css\" />
+  <!-- Extra stil för navigering, flikar och tabeller -->
+  <link rel=\"stylesheet\" href=\"styles_add.css\" />
+  <script>
+    // Enkel inloggningskontroll. Om nyckeln atlasLoggedIn inte finns i localStorage,
+    // eller om du använder det äldre stavfelet atLasLoggedn från tidigare versioner,
+    // så omdirigeras användaren till login-sidan.
+    (function() {
+      var loggedIn = localStorage.getItem('atlasLoggedIn') || localStorage.getItem('atLasLoggedn');
+      if (!loggedIn) {
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
 </head>
 <body>
 <header>
-  <div class="container nav-bar">
-    <div class="logo">VERO Atlas</div>
+  <div class=\"nav-bar\">
+    <div class=\"logo\">VERO Atlas</div>
     <nav>
-      <a href="index.html">Hem</a>
-      <a class="active" href="fraktpriser.html">Fraktpriser</a>
-      <a href="categories.html">Categories</a>
-      <a href="login.html" onclick="localStorage.clear()">Logga ut</a>
+      <a href=\"index.html\">Hem</a>
+      <a href=\"fraktpriser.html\" class=\"active\">Fraktpriser</a>
+      <a href=\"categories.html\">Categories</a>
+      <!-- Logga ut rensar sessionen och återgår till login-sidan -->
+      <a href=\"login.html\" onclick=\"localStorage.removeItem('atlasLoggedIn');localStorage.removeItem('atLasLoggedn');\">Logga ut</a>
     </nav>
   </div>
 </header>
-<main class="dashboard">
-  <div class="container">
-    <h2>Fraktpriser – live från data/</h2>
-    <p class="muted">Auto‑uppdateras var 5:e minut. Klicka “Hämta nu” för att uppdatera direkt.</p>
-    <div style="display:flex; gap:10px; align-items:center; margin:14px 0">
-      <button class="btn" id="refreshNow">Hämta nu</button>
-      <span class="muted small">Senast uppdaterad: <span id="lastUp">–</span></span>
+
+<main class=\"dashboard\">
+  <div class=\"container\">
+    <h2>Fraktpriser – live</h2>
+    <p class=\"muted\">Datan hämtas från lokala JSON-filer i <code>data/</code>-mappen. Uppdateras automatiskt var femte minut.</p>
+
+    <div class=\"controls\">
+      <button class=\"btn\" id=\"refreshNow\">Hämta nu</button>
+      <span class=\"muted small\">Senast uppdaterad: <span id=\"lastUp\">–</span></span>
     </div>
 
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab active" data-seg="bulk">Torrbulk</button>
-      <button class="tab" data-seg="tanker">Tank</button>
-      <button class="tab" data-seg="etc">Container / Övrigt</button>
+    <!-- Flikmeny -->
+    <div class=\"tabs\">
+      <button class=\"tab active\" data-seg=\"torrbulk\">Torrbulk</button>
+      <button class=\"tab\" data-seg=\"tank\">Tank</button>
+      <button class=\"tab\" data-seg=\"container\">Container / Övrigt</button>
     </div>
 
-    <!-- Panel: Torrbulk -->
-    <section id="panel-bulk" class="panel show">
-      <div class="card">
-        <h3 style="margin:16px">Torrbulk (BDI & delindex)</h3>
-        <table class="data-table" id="tbl-bulk">
+    <!-- Paneler för respektive segment -->
+    <section id=\"panel-torrbulk\" class=\"panel show\">
+      <div class=\"card\">
+        <h3 style=\"margin:16px\">Torrbulk (BDI &amp; delindex)</h3>
+        <table class=\"data-table\" id=\"tbl-torrbulk\">
           <thead>
             <tr><th>Serie</th><th>Senaste</th><th>Förändring d/d</th><th>Datum</th></tr>
           </thead>
-          <tbody><tr><td colspan="4">Laddar…</td></tr></tbody>
+          <tbody>
+            <tr><td colspan=\"4\">Laddar…</td></tr>
+          </tbody>
         </table>
       </div>
     </section>
 
-    <!-- Panel: Tank -->
-    <section id="panel-tanker" class="panel">
-      <div class="card">
-        <h3 style="margin:16px">Tank (BDTI/BCTI)</h3">
-        <table class="data-table" id="tbl-tanker">
+    <section id=\"panel-tank\" class=\"panel\">
+      <div class=\"card\">
+        <h3 style=\"margin:16px\">Tank (BDTI / BCTI)</h3>
+        <table class=\"data-table\" id=\"tbl-tank\">
           <thead>
             <tr><th>Serie</th><th>Senaste</th><th>Förändring d/d</th><th>Datum</th></tr>
           </thead>
-          <tbody><tr><td colspan="4">Laddar…</td></tr></tbody>
+          <tbody>
+            <tr><td colspan=\"4\">Laddar…</td></tr>
+          </tbody>
         </table>
       </div>
     </section>
 
-    <!-- Panel: Container / Övrigt -->
-    <section id="panel-etc" class="panel">
-      <div class="card">
-        <h3 style="margin:16px">Container / Övrigt</h3>
-        <table class="data-table" id="tbl-etc">
+    <section id=\"panel-container\" class=\"panel\">
+      <div class=\"card\">
+        <h3 style=\"margin:16px\">Container / Övrigt</h3>
+        <table class=\"data-table\" id=\"tbl-container\">
           <thead>
             <tr><th>Serie</th><th>Senaste</th><th>Förändring d/d</th><th>Datum</th></tr>
           </thead>
-          <tbody><tr><td colspan="4">Laddar…</td></tr></tbody>
+          <tbody>
+            <tr><td colspan=\"4\">Laddar…</td></tr>
+          </tbody>
         </table>
       </div>
     </section>
   </div>
 </main>
 
-<script src="auto_refresh.js"></script>
+<!-- Script som sköter tabbyte och uppdatering av tabeller -->
+<script src=\"auto_refresh.js\"></script>
 <script>
-  // Tab switching
-  const SEG_TO_PANEL = { bulk: 'panel-bulk', tanker: 'panel-tanker', etc: 'panel-etc' };
+  // Flikhantering
+  const SEG_TO_PANEL = { torrbulk: 'panel-torrbulk', tank: 'panel-tank', container: 'panel-container' };
+
   function setActiveSeg(seg, pushHash = true) {
+    // byt aktiv klass på knappar
     document.querySelectorAll('.tab').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.seg === seg);
     });
-    Object.entries(SEG_TO_PANEL).forEach(([k, pid]) => {
-      document.getElementById(pid).classList.toggle('show', k === seg);
+    // visa/dölj paneler
+    Object.entries(SEG_TO_PANEL).forEach(([key, panelId]) => {
+      document.getElementById(panelId).classList.toggle('show', key === seg);
     });
+    // spara val till localStorage
     localStorage.setItem('atlasLastSeg', seg);
     if (pushHash) history.replaceState(null, '', '#' + seg);
   }
+
+  // Initiera flikar på sidladdning
+  (function initTabs() {
+    const fromHash = (location.hash || '').replace('#', '');
+    const saved = localStorage.getItem('atlasLastSeg');
+    const start = ['torrbulk','tank','container'].includes(fromHash) ? fromHash
+                 : ['torrbulk','tank','container'].includes(saved) ? saved
+                 : 'torrbulk';
+    setActiveSeg(start, false);
+  })();
+  // Klicklyssnare på varje flikknapp
   document.querySelectorAll('.tab').forEach(btn => {
     btn.addEventListener('click', () => {
       const seg = btn.dataset.seg;
       setActiveSeg(seg);
-      if (window.VeroAutoRefresh?.refreshNow) window.VeroAutoRefresh.refreshNow();
+      // Triggera en omedelbar uppdatering
+      if (window.VeroAutoRefresh && typeof window.VeroAutoRefresh.refreshNow === 'function') {
+        window.VeroAutoRefresh.refreshNow();
+      }
     });
   });
-  (function initTabs() {
-    const fromHash = (location.hash || '').slice(1);
-    const saved = localStorage.getItem('atlasLastSeg');
-    const start = ['bulk','tanker','etc'].includes(fromHash) ? fromHash :
-                  (['bulk','tanker','etc'].includes(saved) ? saved : 'bulk');
-    setActiveSeg(start, false);
-  })();
 
-  // Auto refresh
-  window.VeroAutoRefresh.init({
-    series: [
-      { name: 'BDI (Baltic Dry Index)', file: 'data/bdi.json', table: 'tbl-bulk' },
-      { name: 'Capesize 5TC', file: 'data/capesize.json', table: 'tbl-bulk' },
-      { name: 'Panamax 4TC', file: 'data/panamax.json', table: 'tbl-bulk' },
-      { name: 'Supramax 10TC', file: 'data/supramax.json', table: 'tbl-bulk' },
-      { name: 'BDTI (Dirty Tanker)', file: 'data/bdti.json', table: 'tbl-tanker' },
-      { name: 'BCTI (Clean Tanker)', file: 'data/bcti.json', table: 'tbl-tanker' },
-      { name: 'SCFI (Container)', file: 'data/scfi.json', table: 'tbl-etc' },
-      { name: 'FBX (Container)', file: 'data/fbx.json', table: 'tbl-etc' }
+  // Konfiguration av serier per kategori
+  const CONFIG = {
+    categories: [
+      {
+        key: 'torrbulk',
+        tableId: 'tbl-torrbulk',
+        series: [
+          { name: 'BDI (Baltic Dry Index)', file: 'data/bdi.json' },
+          { name: 'Capesize 5TC', file: 'data/capesize.json' },
+          { name: 'Panamax 4TC', file: 'data/panamax.json' },
+          { name: 'Supramax 10TC', file: 'data/supramax.json' }
+        ]
+      },
+      {
+        key: 'tank',
+        tableId: 'tbl-tank',
+        series: [
+          { name: 'BDTI (Dirty Tanker)', file: 'data/bdti.json' },
+          { name: 'BCTI (Clean Tanker)', file: 'data/bcti.json' }
+        ]
+      },
+      {
+        key: 'container',
+        tableId: 'tbl-container',
+        series: [
+          { name: 'SCFI (Container)', file: 'data/scfi.json' },
+          { name: 'FBX (Container)', file: 'data/fbx.json' }
+        ]
+      }
     ],
     intervalMs: 5 * 60 * 1000,
-    onTick: iso => {
-      document.getElementById('lastUp').textContent = iso;
+    lastUpSelector: '#lastUp'
+  };
+
+  // Starta auto-refresh när sidan laddats
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.VeroAutoRefresh && typeof window.VeroAutoRefresh.init === 'function') {
+      window.VeroAutoRefresh.init(CONFIG);
     }
-  });
-  document.getElementById('refreshNow').addEventListener('click', () => {
-    window.VeroAutoRefresh.refreshNow();
+    // Koppla Hämta nu-knappen
+    document.getElementById('refreshNow').addEventListener('click', () => {
+      if (window.VeroAutoRefresh && typeof window.VeroAutoRefresh.refreshNow === 'function') {
+        window.VeroAutoRefresh.refreshNow();
+      }
+    });
   });
 </script>
 </body>
