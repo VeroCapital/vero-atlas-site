@@ -1,68 +1,93 @@
-window.VeroAutoRefresh = (function(){
-  async function fetchJSON(url){
-    const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' });
-    if(!res.ok) throw new Error('HTTP ' + res.status + ' for ' + url);
+// auto_refresh.js
+// Denna modul ansvarar för att hämta JSON-data per serie och uppdatera tabellerna
+// i fraktpris-modulen. Den är skriven för att fungera fristående – ingen extern
+// beroende krävs.
+
+(function() {
+  'use strict';
+
+  async function fetchJSON(url) {
+    const bust = url.includes('?') ? '&' : '?';
+    const fullUrl = `${url}${bust}t=${Date.now()}`;
+    const res = await fetch(fullUrl, { cache: 'no-store' });
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} för ${url}`);
+    }
     return await res.json();
   }
 
-  function fmtNumber(x){
-    if (x === null || x === undefined || isNaN(x)) return '–';
-    return new Intl.NumberFormat('sv-SE', { maximumFractionDigits: 2 }).format(x);
+  function fmtNumber(val) {
+    if (val === null || val === undefined || isNaN(val)) return '–';
+    return new Intl.NumberFormat('sv-SE', { maximumFractionDigits: 2 }).format(val);
   }
 
-  function latestAndDelta(series){
-    if(!series || !series.length) return { latest: null, date: '–', delta: null };
-    const s = [...series].sort((a,b) => (a.date > b.date ? 1 : -1));
-    const last = s[s.length-1];
-    const prev = s[s.length-2];
-    const delta = (prev && isFinite(prev.value) && isFinite(last.value)) ? (last.value - prev.value) : null;
-    return { latest: last.value, date: last.date, delta };
+  function latestAndDelta(series) {
+    if (!Array.isArray(series) || series.length === 0) {
+      return { latest: null, date: '–', delta: null };
+    }
+    const sorted = series.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+    const last = sorted[sorted.length - 1];
+    const prev = sorted[sorted.length - 2];
+    const latest = last && typeof last.value === 'number' ? last.value : null;
+    const date = last && last.date ? last.date : '–';
+    const delta = (latest !== null && prev && typeof prev.value === 'number') ? (latest - prev.value) : null;
+    return { latest, date, delta };
   }
 
-  function renderRow(tblId, name, stats){
-    const tb = document.querySelector(`#${tblId} tbody`);
-    if(!tb) return;
+  function clearTable(tableId) {
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    if (tbody) tbody.innerHTML = '';
+  }
+
+  function renderRow(tableId, seriesName, stats) {
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    if (!tbody) return;
     const tr = document.createElement('tr');
-    const change = stats.delta === null ? '–' : ((stats.delta>0?'+':'') + fmtNumber(stats.delta));
-    tr.innerHTML = `<td>${name}</td><td>${fmtNumber(stats.latest)}</td><td>${change}</td><td>${stats.date||'–'}</td>`;
-    tb.appendChild(tr);
+    const change = stats.delta === null ? '–' : ((stats.delta > 0 ? '+' : '') + fmtNumber(stats.delta));
+    tr.innerHTML = `<td>${seriesName}</td><td>${fmtNumber(stats.latest)}</td><td>${change}</td><td>${stats.date}</td>`;
+    tbody.appendChild(tr);
   }
 
-  function clearTable(tblId){
-    const tb = document.querySelector(`#${tblId} tbody`);
-    if (tb) tb.innerHTML = '';
-  }
+  let config = null;
+  let intervalHandle = null;
 
-  async function updateAll(cfg){
-    const byTable = {};
-    cfg.series.forEach(s => { byTable[s.table] = true; });
-    Object.keys(byTable).forEach(tid => clearTable(tid));
-    for(const s of cfg.series){
-      try {
-        const data = await fetchJSON(s.file);
-        const stats = latestAndDelta(data);
-        renderRow(s.table, s.name, stats);
-      } catch(err) {
-        renderRow(s.table, s.name, { latest: null, delta: null, date: 'Fel' });
-        console.error('Fetch failed for', s.file, err);
+  async function updateAll() {
+    if (!config) return;
+    config.categories.forEach(cat => clearTable(cat.tableId));
+    for (const cat of config.categories) {
+      for (const s of cat.series) {
+        try {
+          const data = await fetchJSON(s.file);
+          const stats = latestAndDelta(data);
+          renderRow(cat.tableId, s.name, stats);
+        } catch (err) {
+          const tbody = document.querySelector(`#${cat.tableId} tbody`);
+          if (tbody) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${s.name}</td><td colspan="3">Fel vid hämtning</td>`;
+            tbody.appendChild(tr);
+          }
+        }
       }
     }
-    if(cfg.onTick) cfg.onTick(new Date().toISOString().slice(0, 16).replace('T', ' '));
+    if (config.lastUpSelector) {
+      const now = new Date();
+      const iso = now.toISOString().slice(0,16).replace('T',' ');
+      const el = document.querySelector(config.lastUpSelector);
+      if (el) el.textContent = iso;
+    }
   }
 
-  let interval = null;
-  let cfgRef = null;
-
-  function init(cfg){
-    cfgRef = cfg;
-    updateAll(cfgRef);
-    if(interval) clearInterval(interval);
-    interval = setInterval(() => updateAll(cfgRef), cfg.intervalMs || (5*60*1000));
+  function init(cfg) {
+    config = cfg;
+    updateAll();
+    if (intervalHandle) clearInterval(intervalHandle);
+    intervalHandle = setInterval(updateAll, cfg.intervalMs || 300000);
   }
 
-  function refreshNow(){
-    if (cfgRef) updateAll(cfgRef);
+  function refreshNow() {
+    updateAll();
   }
 
-  return { init, refreshNow };
+  window.VeroAutoRefresh = { init, refreshNow };
 })();
