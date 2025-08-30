@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VERO Atlas – Fraktpriser</title>
   <link rel="stylesheet" href="styles.css" />
-  <script>
-    // Gate: kräver inloggning
-    if (!localStorage.getItem('atlasLoggedIn')) {
-      location.href = 'login.html';
-    }
-  </script>
+<script>
+  // Gate: kräver inloggning
+ if (!localStorage.getItem('atlasLoggedIn') && !localStorage.getItem('atLasLoggedn')) {
+    location.href = 'login.html';
+  }
+</script>ript>
 </head>
 <body>
 <header>
